@@ -1,38 +1,52 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Gadgets;
 
-namespace ConsoleAppProject;
-
-public class Program
+var gadgets = new List<IGadget>
 {
-    public static async Task Main(string[] args)
-    {
-        var env = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT");
-        var appSettingsFile = string.IsNullOrWhiteSpace(env)
-            ? "appsettings.json"
-            : $"appsettings.{env}.json";
+    new LaserPointer("LP-9 \"Red Comet\"", 10),
+    new HologramProjector("Holo-Stage MkII", 140),
+    new GravityBoots("MagStep X", 180)
+};
 
-        //TODO: Add logging
+Console.WriteLine("=== Demo: Polymorphism ===");
+foreach (var g in gadgets)
+{
+    // The interface is the same, but each class runs its own behavior.
+    g.Activate();
+    g.Deactivate();
 
-        var host = Host.CreateDefaultBuilder(args)
-            .ConfigureAppConfiguration((context, config) =>
-            {
-                var env = context.HostingEnvironment;
-                config.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
-                config.AddEnvironmentVariables();
-                config.AddUserSecrets<Program>();
-            })
-            .ConfigureServices((context, services) =>
-            {
-                var itWorks = context.Configuration["Test:Setting1"];
-                Console.WriteLine($"Configuration Test: ItWorks = {itWorks}");
-                // Add other services here if needed
-                services.AddTransient<Application>();
-            }).Build();
+    // Describe() lives on the abstract base; cast to access it cleanly.
+    if (g is GadgetBase gb)
+        Console.WriteLine(gb.Describe());
 
-        using var scope = host.Services.CreateScope();
-        var app = scope.ServiceProvider.GetRequiredService<Application>();
-        await app.DoWork();
-    }
+    Console.WriteLine();
+}
+
+// Bonus 1: gadget with longest name
+var longest = gadgets
+    .Select(g => (g as GadgetBase)!)
+    .OrderByDescending(gb => gb.Name.Length)
+    .First();
+Console.WriteLine($"Longest name: {longest.Name}");
+
+// Bonus 2: user activates a specific gadget
+Console.WriteLine("\nActivate one gadget by number:");
+for (int i = 0; i < gadgets.Count; i++)
+{
+    var name = (gadgets[i] as GadgetBase)!.Name;
+    Console.WriteLine($"{i + 1}) {name}");
+}
+Console.Write("Choice: ");
+if (int.TryParse(Console.ReadLine(), out int choice) &&
+    choice >= 1 && choice <= gadgets.Count)
+{
+    var selected = gadgets[choice - 1];
+    selected.Activate();
+    if (selected is GadgetBase gb2) Console.WriteLine(gb2.Describe());
+}
+else
+{
+    Console.WriteLine("Invalid choice.");
 }
