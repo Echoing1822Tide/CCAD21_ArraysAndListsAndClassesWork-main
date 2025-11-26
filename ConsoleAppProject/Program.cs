@@ -15,9 +15,9 @@ class Program
 
         var gadgets = new List<IGadget>
 {
-    new LaserPointer("LP-3 \"Dotty\"", 5),
-    new HologramProjector("HOLO-Deck MkII", 120),
-    new GravityBoots("G-Boosters", 250),
+    new LaserPointer("CP-3 \"Cassie\"", 5),
+    new HologramProjector("Ian HOLO-deck Blasters", 120),
+    new GravityBoots("Prim-Boosters", 250),
 };
 
         // Banner + mission chatter

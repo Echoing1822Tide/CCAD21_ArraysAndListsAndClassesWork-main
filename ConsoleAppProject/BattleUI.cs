@@ -28,9 +28,9 @@ namespace Gadgets
         }
 
         // Spinner with a message for a short duration
-        public static void Spinner(string message, int durationMs = 900)
+        public static void Spinner(string message, int durationMs = 2000)
         {
-            string[] frames = { "O", "o", "-", "\\" };
+            string[] frames = { "|", "//", "—", "\\" };
             Console.Write(message + " ");
             var start = Environment.TickCount;
             int i = 0;
