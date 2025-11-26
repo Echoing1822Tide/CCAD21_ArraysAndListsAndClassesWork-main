@@ -1,48 +1,28 @@
-using System;
-
 namespace Gadgets;
 
 public abstract class GadgetBase : IGadget
 {
     public string Name { get; }
-    public bool IsActive { get; private set; }
-    public string Status => IsActive ? "Active" : "Inactive";
+    public string Status { get; private set; } = "Idle";
 
-    protected GadgetBase(string name)
-    {
-        Name = string.IsNullOrWhiteSpace(name) ? "Unnamed Gadget" : name.Trim();
-    }
+    protected GadgetBase(string name) => Name = name;
 
-    // Interface methods provide the template; derived classes customize via hooks.
+    // Template Method pattern: fixed outer flow, virtual inner hooks.
     public void Activate()
     {
-        if (!IsActive)
-        {
-            IsActive = true;
-            OnActivated();
-        }
-        else
-        {
-            Console.WriteLine($"{Name} is already active.");
-        }
+        Status = "Activated";
+        OnActivated();
     }
 
     public void Deactivate()
     {
-        if (IsActive)
-        {
-            IsActive = false;
-            OnDeactivated();
-        }
-        else
-        {
-            Console.WriteLine($"{Name} is already inactive.");
-        }
+        Status = "Deactivated";
+        OnDeactivated();
     }
 
-    // “Hooks” for per-gadget behavior
-    protected virtual void OnActivated()   => Console.WriteLine($"{Name} activated.");
-    protected virtual void OnDeactivated() => Console.WriteLine($"{Name} deactivated.");
+    protected virtual void OnActivated() { }
+    protected virtual void OnDeactivated() { }
 
+    // IMPORTANT: keep this returning a string (callers depend on it).
     public virtual string Describe() => $"{Name} [{Status}]";
 }

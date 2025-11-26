@@ -139,5 +139,13 @@ public class OutputHelpers
 
         return sb.ToString();
     }
-    
+        public static void Box(string title, string? body, int width = 60)
+    {
+        string line = new string('*', width);
+        Console.WriteLine(line);
+        Console.WriteLine($"* {title.PadRight(width - 4)} *");
+        if (!string.IsNullOrWhiteSpace(body))
+            Console.WriteLine($"* {body.PadRight(width - 4)} *");
+        Console.WriteLine(line);
+    }
 }
