@@ -9,6 +9,7 @@ public sealed class GravityBoots : GadgetBase
 
     protected override void OnActivated()
     {
+        VT.Warn("Brace! Hull vibrations increasing!");
         BattleUI.TypeLine($"{Name}: engage mag-clamps, brace for recoil!");
         BattleUI.Spinner("Aligning to ship hull");
         Console.WriteLine($"{Name} engages magnetic soles (max lift {MaxLiftKg} kg).");

@@ -43,6 +43,7 @@ class Program
                 if (!string.IsNullOrWhiteSpace(yn) &&
                     yn.StartsWith("y", StringComparison.OrdinalIgnoreCase))
                 {
+                    VT.Warn($"{gb.Name}: weapons free!"); 
                     g.Activate();       // each class prints its own effects
                     BattleUI.Cheer();   // fun feedback line
                     g.Deactivate();

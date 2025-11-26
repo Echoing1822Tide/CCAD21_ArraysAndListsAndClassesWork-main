@@ -7,6 +7,7 @@ public sealed class HologramProjector : GadgetBase
 
         protected override void OnActivated()
         {
+            VT.Cheer("Enemy targeting scrambled!");
             BattleUI.TypeLine($"{Name}: deploying decoy battalion…");
             BattleUI.Spinner("Projecting volumetric light");
             Console.WriteLine($"{Name} paints a volumetric image (FOV {FieldOfViewDegrees:0.#}°).");

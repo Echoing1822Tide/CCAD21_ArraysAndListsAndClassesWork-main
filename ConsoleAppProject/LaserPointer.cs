@@ -12,12 +12,16 @@ public sealed class LaserPointer : GadgetBase
         BattleUI.TypeLine($"{Name}: targeting hostile scout…");
         BattleUI.Spinner("Calibrating optics");
         BattleUI.Beam("HUMANS", "ALIENS");
+
         bool hit = _rng.Next(100) < 70;   // 70% hit chance
 #if WINDOWS
-                        Console.Beep(1000, 120);          // pew
-                        Console.Beep(1400, 120);
+        Console.Beep(1000, 120);          // pew
+        Console.Beep(1400, 120);
+        if (hit) VT.Cheer("Enemy down!");
+        else VT.Alert("Counterfire detected!");
 #endif
         BattleUI.Outcome(hit);
+        
         Console.WriteLine($"{Name} emits a focused {MilliWatts} mW beam.");
     }
     protected override void OnDeactivated()
